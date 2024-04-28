@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:table_calendar/table_calendar.dart';
 
-void main() {
-  runApp(MoodTrackerApp());
-}
+void main() => runApp(MoodTrackerApp());
 
 class MoodTrackerApp extends StatelessWidget {
   @override
@@ -24,53 +25,93 @@ class MoodTrackerHomePage extends StatefulWidget {
 
 class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
   String _mood = 'Good';
-  final TextEditingController _memoController = TextEditingController();
+  String _memo = '';
+  DateTime _selectedDay = DateTime.now();
+  Map<DateTime, List<dynamic>> _moods = {};
 
-  void _updateMood(String newMood) {
+  TextEditingController _memoController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMoods();
+  }
+
+  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
     setState(() {
-      _mood = newMood;
+      _selectedDay = selectedDay;
+    });
+    _showMoodDialog();
+  }
+
+  Future<void> _loadMoods() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _moods = Map<DateTime, List<dynamic>>.from(
+        (json.decode(prefs.getString('moods') ?? '{}') as Map).map(
+              (key, value) => MapEntry(DateTime.parse(key), value),
+        ),
+      );
+    });
+  }
+
+  Future<void> _saveMood() async {
+    final prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _moods[_selectedDay] = [_mood, _memoController.text];
+      prefs.setString('moods', json.encode(
+        _moods.map((key, value) => MapEntry(key.toIso8601String(), value)),
+      ));
+      _memoController.clear();
     });
   }
 
   Future<void> _showMoodDialog() async {
     return showDialog<void>(
       context: context,
-      barrierDismissible: true, // Dialog to dismiss when tapping outside.
+      barrierDismissible: true,
       builder: (BuildContext context) {
         return AlertDialog(
           title: Text('How are you feeling?'),
           content: SingleChildScrollView(
             child: ListBody(
-              children: <String>['Great', 'Good', 'Okay', 'Bad', 'Terrible']
-                  .map((String mood) => GestureDetector(
-                child: Text(mood),
-                onTap: () {
-                  _updateMood(mood);
-                  Navigator.of(context).pop();
-                },
-              ))
-                  .toList(),
+              children: <Widget>[
+                ...['Great', 'Good', 'Okay', 'Bad', 'Terrible'].map(
+                      (String mood) => ListTile(
+                    title: Text(mood),
+                    onTap: () {
+                      setState(() {
+                        _mood = mood;
+                      });
+                      Navigator.of(context).pop();
+                    },
+                  ),
+                ),
+                TextField(
+                  controller: _memoController,
+                  decoration: InputDecoration(labelText: 'Add a memo...'),
+                ),
+              ],
             ),
           ),
+          actions: <Widget>[
+            TextButton(
+              child: Text('Cancel'),
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+            ),
+            TextButton(
+              child: Text('Save'),
+              onPressed: () {
+                _saveMood();
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
         );
       },
     );
-  }
-
-  // 새로운 기능: 사용자의 메모를 저장합니다.
-  void _saveEntry() {
-    final String memoText = _memoController.text;
-    if (memoText.isNotEmpty) {
-      // 여기서 데이터베이스에 기분과 메모를 저장하는 로직을 추가합니다.
-      print('Saving Mood: $_mood, Memo: $memoText'); // 임시 로그 출력
-      _memoController.clear(); // 입력 필드를 비웁니다.
-    }
-  }
-
-  @override
-  void dispose() {
-    _memoController.dispose(); // 컨트롤러 정리
-    super.dispose();
   }
 
   @override
@@ -79,36 +120,28 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
       appBar: AppBar(
         title: Text('Mood Tracker'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'Your current mood is: $_mood',
-              style: Theme.of(context).textTheme.headline6,
-            ),
-            SizedBox(height: 20),
-            TextField(
-              controller: _memoController,
-              decoration: InputDecoration(
-                labelText: 'Add a memo about your day...',
-              ),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _saveEntry,
-              child: Text('Save Entry'),
-            ),
-            // 여기에 저장된 기분과 메모를 표시하는 위젯을 추가할 수 있습니다.
-          ],
-        ),
+      body: Column(
+        children: [
+          TableCalendar(
+            firstDay: DateTime.utc(2010, 10, 16),
+            lastDay: DateTime.utc(2030, 3, 14),
+            focusedDay: DateTime.now(),
+            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
+            onDaySelected: _onDaySelected,
+            eventLoader: (day) {
+              return _moods[day] ?? [];
+            },
+          ),
+          // ... 기분 및 메모 UI 추가
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showMoodDialog,
-        tooltip: 'Record Mood',
-        child: Icon(Icons.add),
-      ),
+      // ... FloatingActionButton 등 추가
     );
+  }
+
+  @override
+  void dispose() {
+    _memoController.dispose();
+    super.dispose();
   }
 }
