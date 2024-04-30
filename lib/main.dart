@@ -1,147 +1,21 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:table_calendar/table_calendar.dart';
+import 'package:app_test_01/mood_tracker_home_page.dart';
 
+// 애플리케이션의 진입점입니다.
 void main() => runApp(MoodTrackerApp());
 
+// 애플리케이션의 최상위 위젯을 정의하는 클래스입니다.
+// StatelessWidget을 상속받아, 상태가 없는 위젯임을 나타냅니다.
 class MoodTrackerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // MaterialApp은 Material Design 앱을 생성하기 위한 루트 위젯입니다.
     return MaterialApp(
-      title: 'Mood Tracker',
+      title: 'Mood Tracker', // 앱의 타이틀을 정의합니다.
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blue, // 앱의 기본 색상 테마를 설정합니다.
       ),
-      home: MoodTrackerHomePage(),
+      home: MoodTrackerHomePage(), // 앱이 시작될 때 표시될 홈페이지를 지정합니다.
     );
-  }
-}
-
-class MoodTrackerHomePage extends StatefulWidget {
-  @override
-  _MoodTrackerHomePageState createState() => _MoodTrackerHomePageState();
-}
-
-class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
-  String _mood = 'Good';
-  String _memo = '';
-  DateTime _selectedDay = DateTime.now();
-  Map<DateTime, List<dynamic>> _moods = {};
-
-  TextEditingController _memoController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    _loadMoods();
-  }
-
-  void _onDaySelected(DateTime selectedDay, DateTime focusedDay) {
-    setState(() {
-      _selectedDay = selectedDay;
-    });
-    _showMoodDialog();
-  }
-
-  Future<void> _loadMoods() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _moods = Map<DateTime, List<dynamic>>.from(
-        (json.decode(prefs.getString('moods') ?? '{}') as Map).map(
-              (key, value) => MapEntry(DateTime.parse(key), value),
-        ),
-      );
-    });
-  }
-
-  Future<void> _saveMood() async {
-    final prefs = await SharedPreferences.getInstance();
-    setState(() {
-      _moods[_selectedDay] = [_mood, _memoController.text];
-      prefs.setString('moods', json.encode(
-        _moods.map((key, value) => MapEntry(key.toIso8601String(), value)),
-      ));
-      _memoController.clear();
-    });
-  }
-
-  Future<void> _showMoodDialog() async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('How are you feeling?'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                ...['Great', 'Good', 'Okay', 'Bad', 'Terrible'].map(
-                      (String mood) => ListTile(
-                    title: Text(mood),
-                    onTap: () {
-                      setState(() {
-                        _mood = mood;
-                      });
-                      Navigator.of(context).pop();
-                    },
-                  ),
-                ),
-                TextField(
-                  controller: _memoController,
-                  decoration: InputDecoration(labelText: 'Add a memo...'),
-                ),
-              ],
-            ),
-          ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('Save'),
-              onPressed: () {
-                _saveMood();
-                Navigator.of(context).pop();
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Mood Tracker'),
-      ),
-      body: Column(
-        children: [
-          TableCalendar(
-            firstDay: DateTime.utc(2010, 10, 16),
-            lastDay: DateTime.utc(2030, 3, 14),
-            focusedDay: DateTime.now(),
-            selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
-            onDaySelected: _onDaySelected,
-            eventLoader: (day) {
-              return _moods[day] ?? [];
-            },
-          ),
-          // ... 기분 및 메모 UI 추가
-        ],
-      ),
-      // ... FloatingActionButton 등 추가
-    );
-  }
-
-  @override
-  void dispose() {
-    _memoController.dispose();
-    super.dispose();
   }
 }
