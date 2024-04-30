@@ -7,6 +7,8 @@ void main() => runApp(MoodTrackerApp());
 // 애플리케이션의 최상위 위젯을 정의하는 클래스입니다.
 // StatelessWidget을 상속받아, 상태가 없는 위젯임을 나타냅니다.
 class MoodTrackerApp extends StatelessWidget {
+  // flutter에서 모든 위젯은 선택적으로 'key'매개변수를 받을 수 있어야 한다.
+  MoodTrackerApp({Key? key}) : super(key : key);
   @override
   Widget build(BuildContext context) {
     // MaterialApp은 Material Design 앱을 생성하기 위한 루트 위젯입니다.
