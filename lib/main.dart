@@ -17,7 +17,7 @@ class MoodTrackerApp extends StatelessWidget {
     return MaterialApp(
       title: 'Mood Tracker', // 앱의 타이틀을 정의합니다.
       theme: ThemeData(
-        primarySwatch: Colors.blue, // 앱의 기본 색상 테마를 설정합니다.
+        primarySwatch: Colors.green, // 앱의 기본 색상 테마를 설정합니다.
       ),
       home: MoodTrackerHomePage(), // 앱이 시작될 때 표시될 홈페이지를 지정합니다.
     );
