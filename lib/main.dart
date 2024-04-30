@@ -8,6 +8,8 @@ void main() => runApp(MoodTrackerApp());
 // StatelessWidget을 상속받아, 상태가 없는 위젯임을 나타냅니다.
 class MoodTrackerApp extends StatelessWidget {
   // flutter에서 모든 위젯은 선택적으로 'key'매개변수를 받을 수 있어야 한다.
+  // 'Key? key'는 key가 null일 수도 있다는 null safety 기능
+  // 'super(key : key)'는 StateleesWidget의 생성자에 key를 전달하여 부모 클래스 초기화
   MoodTrackerApp({Key? key}) : super(key : key);
   @override
   Widget build(BuildContext context) {
