@@ -5,10 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:app_test_01/main.dart';
 
 void main() {
-  setUp(() async {
-    SharedPreferences.setMockInitialValues({});
-  });
-
   testWidgets('Displays mood dialog and accepts input', (WidgetTester tester) async {
     await tester.pumpWidget(MoodTrackerApp());
 
