@@ -6,11 +6,25 @@ import 'package:app_test_01/mood_calendar.dart';
 // 상태 관리가 필요한 홈 페이지 위젯을 정의한다.
 class MoodTrackerHomePage extends StatefulWidget {
   MoodTrackerHomePage({Key? key}) : super(key : key);
+
+  /*
+    StatefulWidget을 사용할 때, 위젯의 상태를 관리하는 별도의 State 클래스를 정의하는 이유는,
+    StatefulWidget과 State 클래스가 분리되어 있기 때문이다. 이는 코드의 재사용성과 생명주기 관리에 용이하다.
+    개발자는 UI 구조를 변경하고자 할 때 StatefulWidget을 수정하고,
+    상태 관리 로직을 변경하고자 할 때 State 클래스를 수정함으로써, 두 영역을 명확하게 구분할 수 있다.
+   */
+
+  // createState() 함수는 위젯의 상태를 관리할 State 객체를 생성한다.
+  // 이 패턴은 flutter에서 상태가 동적으로 변경될 수 있는 모든 위젯에 적용된다.
   @override
   _MoodTrackerHomePageState createState() => _MoodTrackerHomePageState();
 }
 
 // MoodTrackerHomePage 위젯의 상태를 관리하는 클래스이다.
+/*
+  State 객체는 앱이 실행되는 동안 사용자의 인터랙션 또는 데이터 변경에 의해 발생하는 모든 상태변경을 보관한다.
+  또한, 상태가 변결될 때 마다 setState() 함수를 사용하여 위젯의 build() 함수를 호출하고, 변경된 상태에 따라 UI를 갱신한다.
+*/
 class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
   String _mood = 'Good'; // 현재 사용자의 기분을 저장하는 변수이다.
   String _memo = ''; // 사용자가 입력한 메모를 저장하는 변수이다.
