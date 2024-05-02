@@ -86,8 +86,10 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
           onMoodSelected: (mood) {
             setState(() {
               _mood = mood; // 선택된 기분을 상태에 저장
+              _moods[_selectedDay] = [_mood, _memoController.text];
             });
-            _saveMood(); // 변경된 기분을 저장
+            print("_momoController $_memoController");
+            // _saveMood(); // 변경된 기분을 저장
           },
         );
       },
@@ -110,7 +112,12 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
               });
               _showMoodDialog(); // 새로운 기분을 입력받기 위한 다이얼로그를 보여준다.
             },
-            eventLoader: (day) => _moods[day] ?? [], // 해당 날짜의 기분 데이터를 불러온다.
+            //eventLoader: (day) => _moods[day] ?? [], // 해당 날짜의 기분 데이터를 불러온다.
+            eventLoader: (DateTime day){
+              // print("Querying events for: $day");
+              return _moods[day] ?? []; // ?? [] : dart의 null-coalescing 연산자, _moods[day]에서 조회한 값이,
+                                        // null일 경우(해당 날짜에 데이터가 없는 경우) []를 반환한다.
+            },
           ),
         ],
       ),
