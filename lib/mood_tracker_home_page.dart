@@ -91,6 +91,9 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
             print("_momoController $_memoController");
             //_saveMood(); // 변경된 기분을 저장..이걸 save 버튼 눌렀을 때로..
           },
+          onSavePressd: (){
+            _saveMood();
+          },
         );
       },
     );
