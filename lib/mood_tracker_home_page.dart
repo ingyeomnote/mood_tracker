@@ -121,7 +121,7 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
               // print("Querying events for: $day");
               return _moods[day] ?? []; // ?? [] : dart의 null-coalescing 연산자, _moods[day]에서 조회한 값이,
                                         // null일 경우(해당 날짜에 데이터가 없는 경우) []를 반환한다.
-              // save 버튼을 눌러야 저장이 되야하고, 선택했을 때는 이벤트로더가 돌면 안되는데 돌아버림..
+              // save 버튼을 눌러야 저장이 되야하고, 선택했을 때는 이벤트로더가 돌면 안되는데 돌아버림.. -> 해결했지만 이벤트 수정필요
             },
           ),
         ],
