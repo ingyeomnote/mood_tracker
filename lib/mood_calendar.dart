@@ -28,6 +28,64 @@ class MoodCalendar extends StatelessWidget {
       selectedDayPredicate: (day) => isSameDay(selectedDay, day), // 선택된 날짜를 결정하는 함수이다.
       onDaySelected: onDaySelected, // 날짜를 선택할 때 호출되는 콜백 함수이다.
       eventLoader: eventLoader, // 선택된 날짜의 이벤트를 로드하는 함수이다.
+
+      // 캘린더 스타일 커스터마이징
+      calendarStyle: CalendarStyle(
+        todayDecoration: BoxDecoration(
+          color: Colors.lightBlueAccent,
+          shape: BoxShape.circle,
+        ),
+        selectedDecoration: BoxDecoration(
+          color: Colors.purple,
+          shape: BoxShape.circle,
+        ),
+        defaultDecoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.grey),
+        ),
+        weekendDecoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(color: Colors.red),
+        ),
+        markerDecoration: BoxDecoration(
+          color: Colors.black,
+          shape: BoxShape.circle,
+        ),
+        // 기타 스타일 옵션을 추가할 수 있습니다.
+      ),
+
+      // 캘린더 헤더 스타일 커스터마이징
+      headerStyle: HeaderStyle(
+        titleCentered: true,
+        formatButtonVisible: false,
+        titleTextStyle: TextStyle(
+          color: Colors.blueAccent,
+          fontSize: 20,
+          fontWeight: FontWeight.bold,
+        ),
+        leftChevronIcon: Icon(Icons.chevron_left, color: Colors.blueAccent),
+        rightChevronIcon: Icon(Icons.chevron_right, color: Colors.blueAccent),
+      ),
+
+      // 마커를 세밀하게 조정
+      calendarBuilders: CalendarBuilders(
+        markerBuilder: (context, date, events) {
+          if (events.isNotEmpty) {
+            return Positioned(
+              bottom: 1,
+              child: Container(
+                width: 8,
+                height: 8,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  shape: BoxShape.circle,
+                ),
+              ),
+            );
+          }
+          return SizedBox.shrink();
+        },
+      ),
     );
   }
 }
