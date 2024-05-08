@@ -69,6 +69,29 @@ class MoodCalendar extends StatelessWidget {
 
       // 마커를 세밀하게 조정
       calendarBuilders: CalendarBuilders(
+        selectedBuilder: (context, date, _) {
+          // 선택된 날짜에 이미지를 사용하도록 구성
+          return Container(
+            width: 50, // 날짜 셀 크기
+            height: 50,
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/selected_day_image.png'), // 원하는 이미지 경로
+                fit: BoxFit.cover,
+              ),
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              '${date.day}',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          );
+        },
+
+        // 이벤트 마커 설정
         markerBuilder: (context, date, events) {
           if (events.isNotEmpty) {
             return Positioned(
