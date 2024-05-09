@@ -11,12 +11,14 @@ class MoodCalendar extends StatelessWidget {
   final DateTime selectedDay; // 현재 선택된 날짜이다.
   final Function(DateTime, DateTime) onDaySelected; // 날짜 선택 시 호출되는 콜백 함수이다.
   final List<dynamic> Function(DateTime) eventLoader; // 이벤트 로드 함수이다.
+  final Map<DateTime, String> moodEvents; // 날짜와 감정 이미지를 매핑
 
   MoodCalendar({
     Key? key,
     required this.selectedDay,
     required this.onDaySelected,
     required this.eventLoader,
+    required this.moodEvents,
   }) : super(key: key);
 
   @override
@@ -29,7 +31,7 @@ class MoodCalendar extends StatelessWidget {
       onDaySelected: onDaySelected, // 날짜를 선택할 때 호출되는 콜백 함수이다.
       eventLoader: eventLoader, // 선택된 날짜의 이벤트를 로드하는 함수이다.
 
-      // 캘린더 스타일 커스터마이징
+      /*// 캘린더 스타일 커스터마이징
       calendarStyle: CalendarStyle(
         todayDecoration: BoxDecoration(
           color: Colors.lightBlueAccent,
@@ -52,8 +54,10 @@ class MoodCalendar extends StatelessWidget {
           shape: BoxShape.circle,
         ),
         // 기타 스타일 옵션을 추가할 수 있습니다.
-      ),
+      ),*/
 
+
+/*
       // 캘린더 헤더 스타일 커스터마이징
       headerStyle: HeaderStyle(
         titleCentered: true,
@@ -107,6 +111,42 @@ class MoodCalendar extends StatelessWidget {
             );
           }
           return SizedBox.shrink();
+        },
+      ),*/
+
+    // 각 날짜에 맞게 감정 상태 이미지를 표시하기 위한 CalendarBuilders
+      calendarBuilders: CalendarBuilders(
+        markerBuilder: (context, date, events) {
+          if (moodEvents.containsKey(date)) {
+            // 감정 이미지를 `assets` 폴더에서 로드
+            return Positioned(
+              bottom: 1,
+              child: Image.asset(
+                moodEvents[date]!,
+                width: 24,
+                height: 24,
+              ),
+            );
+          }
+          return SizedBox.shrink(); // 이벤트가 없으면 빈 위젯 반환
+        },
+        selectedBuilder: (context, date, _) {
+          return Container(
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.blue,
+            ),
+            alignment: Alignment.center,
+            child: Text(
+              '${date.day}',
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          );
         },
       ),
     );

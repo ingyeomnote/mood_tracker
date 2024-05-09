@@ -32,6 +32,14 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
   Map<DateTime, List<dynamic>> _moods = {}; // 날짜별 기분과 메모를 저장하는 맵이다.
   TextEditingController _memoController = TextEditingController(); // 메모 입력을 위한 컨트롤러이다.
   MoodManager moodManager = MoodManager(); // MoodManager 인스턴스를 생성한다.
+  Map<DateTime, String> moodEvents = {};
+
+  Map<String, String> moodImages = {
+    'Good': 'assets/Good.png',
+    'Okay': 'assets/Okay.png',
+    'Bad': 'assets/Bad.png',
+    // 다른 감정 상태도 필요한 만큼 추가
+  };
 
   // State 객체가 생성된 후 처음으로 호출되는 함수
   // 초기화(변수의 초기 설정, 데이터 로딩, 네트워크 요청 등) 작업을 초기에 한 번만 수행한다.
@@ -56,6 +64,28 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
     // 해당 함수는 Future<Map<DateTime, List<dynamic>>를 반환하므로,
     // 데이터 로딩이 완료될 때 까지 기다리기 위해 await를 사용함
     _moods = await moodManager.loadMoods();
+    // 새로운 Map<DateTime, String>으로 변환(기분 상태 이미지 연결)
+    Map<DateTime, String> moodEvents = Map.fromEntries(
+      _moods.entries
+        .where((entry){
+          // 기분 상태가 유효한 지 확인(key 존재 여부)
+          String mood = entry.value.isNotEmpty ? entry.value[0] as String : '';
+          return moodImages.containsKey(mood);
+        })
+        .map((entry){
+          // 기분 상태에 맞는 이미지 경로 추출
+          String mood = entry.value[0] as String;
+          String imgPath = moodImages[mood]!;
+
+          // MapEntry를 반환하여 날짜-이미지 쌍 생성
+          return MapEntry(entry.key, imgPath);
+        }),
+    );
+
+
+    print("결과 $moodEvents");
+
+    print("_momoController $_moods[_selectedDay]");
 
     setState(() {});
     /*
@@ -88,7 +118,7 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
               _mood = mood; // 선택된 기분을 상태에 저장
               _moods[_selectedDay] = [_mood, _memoController.text];
             });
-            print("_momoController $_memoController");
+             // print("_momoController $_memoController");
             //_saveMood(); // 변경된 기분을 저장..이걸 save 버튼 눌렀을 때로..
           },
           onSavePressd: (){
@@ -123,6 +153,7 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
                                         // null일 경우(해당 날짜에 데이터가 없는 경우) []를 반환한다.
               // save 버튼을 눌러야 저장이 되야하고, 선택했을 때는 이벤트로더가 돌면 안되는데 돌아버림.. -> 해결했지만 이벤트 수정필요
             },
+            moodEvents: moodEvents,
           ),
         ],
       ),
