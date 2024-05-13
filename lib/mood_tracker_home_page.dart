@@ -105,6 +105,7 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
   Future<void> _saveMood() async {
     await moodManager.saveMoods(_moods);
     _memoController.clear(); // 메모 입력 필드를 초기화한다.
+    _loadMoods(); // save 눌렀을 때 바로 이모티콘 나오게..?
   }
 
   // 기분 입력을 위한 다이얼로그를 보여주는 함수이다.
