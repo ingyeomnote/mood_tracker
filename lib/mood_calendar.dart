@@ -117,6 +117,10 @@ class MoodCalendar extends StatelessWidget {
     // 각 날짜에 맞게 감정 상태 이미지를 표시하기 위한 CalendarBuilders
       calendarBuilders: CalendarBuilders(
         markerBuilder: (context, date, events) {
+          print("moodEvents : $moodEvents");
+          /*print("context : $context, date : $date, events: $events");
+          print("moodEvents : $moodEvents");
+          print(moodEvents.containsKey(date));*/
           if (moodEvents.containsKey(date)) {
             // 감정 이미지를 `assets` 폴더에서 로드
             return Positioned(

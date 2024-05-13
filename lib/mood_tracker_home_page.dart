@@ -87,7 +87,9 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
 
     print("_momoController $_moods[_selectedDay]");
 
-    setState(() {});
+    setState(() {
+      this.moodEvents = moodEvents;
+    });
     /*
       setState() 함수는 주어진 함수를 실행하고, 함수 실행이 완료된 후에 위젯의 build() 메서드를 호출하여,
       화면을 갱신한다. 이는 데이터 변경 후 UI를 업데이트해야 할 때 필수적으로 사용된다.
