@@ -35,16 +35,23 @@ class _MoodDialogState extends State<MoodDialog>{
       content: SingleChildScrollView( // 스크롤 가능한 컨텐츠 영역이다.
         child: ListBody( // 리스트 아이템들을 세로로 나열한다.
           children: <Widget>[
-            ...['Great', 'Good', 'Okay', 'Bad', 'Terrible'].map(
-                  (String mood) => ListTile(
-                title: Text(mood),
-                leading: selectedMood == mood? Icon(Icons.check, color: Colors.green) : null, // 선택 표시 추가
-                tileColor: selectedMood == mood? Colors.lightBlueAccent : Colors.transparent, // 배경색 변경
-                onTap: (){
+            ...[
+              {'mood': 'Great', 'image': 'assets/Great.png'},
+              {'mood': 'Good', 'image': 'assets/Good.png'},
+              {'mood': 'Okay', 'image': 'assets/Okay.png'},
+              {'mood': 'Bad', 'image': 'assets/Bad.png'},
+              {'mood': 'Terrible', 'image': 'assets/Terrible.png'}
+            ].map(
+                  (item) => ListTile(
+                title: Text(item['mood']!),
+                leading: Image.asset(item['image']!, width: 40, height: 40),
+                trailing: selectedMood == item['mood'] ? Icon(Icons.check, color: Colors.green) : null, // 선택 표시 추가
+                tileColor: selectedMood == item['mood'] ? Colors.lightBlueAccent : Colors.transparent, // 배경색 변경
+                onTap: () {
                   setState(() {
-                    selectedMood = mood;
+                    selectedMood = item['mood'];
                   });
-                  widget.onMoodSelected(mood); // 해당 기분을 선택 시 콜백 호출
+                  widget.onMoodSelected(item['mood']!); // 해당 기분을 선택 시 콜백 호출
                 },
               ),
             ),
