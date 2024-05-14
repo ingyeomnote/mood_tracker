@@ -35,9 +35,11 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
   Map<DateTime, String> moodEvents = {};
 
   Map<String, String> moodImages = {
+    'Great': 'assets/Great.png',
     'Good': 'assets/Good.png',
     'Okay': 'assets/Okay.png',
     'Bad': 'assets/Bad.png',
+    'Terrible': 'assets/Terrible.png'
     // 다른 감정 상태도 필요한 만큼 추가
   };
 
