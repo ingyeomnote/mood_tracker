@@ -3,6 +3,8 @@ import 'package:app_test_01/mood_manager.dart';
 import 'package:app_test_01/mood_dialog.dart';
 import 'package:app_test_01/mood_calendar.dart';
 
+import 'package:app_test_01/mood.dart';
+
 // 상태 관리가 필요한 홈 페이지 위젯을 정의한다.
 class MoodTrackerHomePage extends StatefulWidget {
   MoodTrackerHomePage({Key? key}) : super(key : key);
@@ -34,15 +36,6 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
   MoodManager moodManager = MoodManager(); // MoodManager 인스턴스를 생성한다.
   Map<DateTime, String> moodEvents = {};
 
-  Map<String, String> moodImages = {
-    'Great': 'assets/Great.png',
-    'Good': 'assets/Good.png',
-    'Okay': 'assets/Okay.png',
-    'Bad': 'assets/Bad.png',
-    'Terrible': 'assets/Terrible.png'
-    // 다른 감정 상태도 필요한 만큼 추가
-  };
-
   // State 객체가 생성된 후 처음으로 호출되는 함수
   // 초기화(변수의 초기 설정, 데이터 로딩, 네트워크 요청 등) 작업을 초기에 한 번만 수행한다.
   // 위젯이 화면에 표시되기 전에 데이터를 미리 불러올 때 사용한다.
@@ -66,6 +59,7 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
     // 해당 함수는 Future<Map<DateTime, List<dynamic>>를 반환하므로,
     // 데이터 로딩이 완료될 때 까지 기다리기 위해 await를 사용함
     _moods = await moodManager.loadMoods();
+
     // 새로운 Map<DateTime, String>으로 변환(기분 상태 이미지 연결)
     Map<DateTime, String> moodEvents = Map.fromEntries(
       _moods.entries
@@ -77,7 +71,8 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
         .map((entry){
           // 기분 상태에 맞는 이미지 경로 추출
           String mood = entry.value[0] as String;
-          String imgPath = moodImages[mood]!;
+         String imgPath = moodImages[mood]!;
+
 
           // MapEntry를 반환하여 날짜-이미지 쌍 생성
           return MapEntry(entry.key, imgPath);
