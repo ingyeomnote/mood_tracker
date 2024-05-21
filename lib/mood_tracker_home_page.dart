@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:app_test_01/mood_manager.dart';
-import 'package:app_test_01/mood_dialog.dart';
-import 'package:app_test_01/mood_calendar.dart';
-
-import 'package:app_test_01/mood.dart';
+import 'mood_manager.dart';
+import 'mood_dialog.dart';
+import 'mood_calendar.dart';
+import 'mood.dart';
+import 'statistics_page.dart';
 
 // 상태 관리가 필요한 홈 페이지 위젯을 정의한다.
 class MoodTrackerHomePage extends StatefulWidget {
@@ -129,6 +129,16 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Mood Tracker'), // 앱 바의 타이틀을 설정한다.
+        actions: [
+          IconButton(
+            icon: Icon(Icons.bar_chart),
+            onPressed: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => StatisticsPage(moodEvents: moodEvents)),
+              );
+            },
+          )
+        ],
       ),
       body: Column(
         children: [
