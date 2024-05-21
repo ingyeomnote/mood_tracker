@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:app_test_01/mood_tracker_home_page.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // 애플리케이션의 진입점이다.
 void main() => runApp(MoodTrackerApp());
@@ -26,6 +27,9 @@ class MoodTrackerApp extends StatelessWidget {
       title: 'Mood Tracker', // 앱의 타이틀을 정의한다.
       theme: ThemeData(
         primarySwatch: Colors.green, // 앱의 기본 색상 테마를 설정한다.
+        textTheme: GoogleFonts.latoTextTheme(
+          Theme.of(context).textTheme,
+        ),
       ),
       home: MoodTrackerHomePage(), // 앱이 시작될 때 표시될 홈페이지를 지정한다.
     );
