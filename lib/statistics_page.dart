@@ -9,7 +9,7 @@ class StatisticsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // 각 감정 이미지 경로를 키로, 해당 감정의 빈도를 값으로 갖는 맵 초기화
-    Map<String, int> moodCounts = {
+    Map<String, int> moodCounts = { // moodcounts: 감정 -> key, 횟수 : value
       'assets/Great.png': 0,
       'assets/Good.png': 0,
       'assets/Okay.png': 0,
@@ -47,7 +47,7 @@ class StatisticsPage extends StatelessWidget {
         title: Text('Mood Statistics'), // 앱 바의 제목 설정
       ),
       body: Padding(
-        padding: const EdgeInsets.all(8.0), // 전체 패딩 설정
+        padding: const EdgeInsets.all(150), // 전체 패딩 설정
         child: BarChart(
           BarChartData(
             alignment: BarChartAlignment.spaceAround, // 막대 정렬 방식 설정
