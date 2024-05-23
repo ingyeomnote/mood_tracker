@@ -56,7 +56,7 @@ class StatisticsPage extends StatelessWidget {
               leftTitles: SideTitles(showTitles: true), // y축 타이틀 표시 설정
               bottomTitles: SideTitles(
                 showTitles: true, // x축 타이틀 표시 설정
-                getTitles: (double value) {
+                getTitles: (double value)  // -> 문자를 넣어서 실제 데이터와 매핑해야함,,,
                   // x축 타이틀을 문자열로 변환하여 반환
                   switch (value.toInt()) { // -> 실제 local 데이터와 매칭되지 않음
                     case 0:
