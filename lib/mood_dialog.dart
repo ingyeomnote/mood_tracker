@@ -22,6 +22,7 @@ class _MoodDialogState extends State<MoodDialog> {
 
   @override
   Widget build(BuildContext context) {
+    print("mood_dialog의 context $context");
     return AlertDialog(
       title: Text('How are you feeling?'),
       content: SingleChildScrollView(

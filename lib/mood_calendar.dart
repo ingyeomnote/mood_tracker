@@ -23,6 +23,7 @@ class MoodCalendar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("calendar의 context $context");
     return TableCalendar(
       firstDay: DateTime.utc(2010, 10, 16), // 달력의 시작 날짜이다.
       lastDay: DateTime.utc(2030, 3, 14),   // 달력의 마지막 날짜이다.

@@ -8,6 +8,7 @@ class StatisticsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("statistics_page의 context $context");
     // 각 감정 이미지 경로를 키로, 해당 감정의 빈도를 값으로 갖는 맵 초기화
     Map<String, int> moodCounts = { // moodcounts: 감정 -> key, 횟수 : value
       'assets/Great.png': 0,
