@@ -3,20 +3,19 @@ import 'package:fl_chart/fl_chart.dart';
 
 class StatisticsPage extends StatelessWidget {
   final Map<DateTime, String> moodEvents;
-
   StatisticsPage({required this.moodEvents});
+  // 각 감정 이미지 경로를 키로, 해당 감정의 빈도를 값으로 갖는 맵 초기화
+  Map<String, int> moodCounts = { // moodcounts: 감정 -> key, 횟수 : value
+    'assets/Great.png': 0,
+    'assets/Good.png': 0,
+    'assets/Okay.png': 0,
+    'assets/Bad.png': 0,
+    'assets/Terrible.png': 0,
+  };
 
   @override
   Widget build(BuildContext context) {
     print("statistics_page의 context $context");
-    // 각 감정 이미지 경로를 키로, 해당 감정의 빈도를 값으로 갖는 맵 초기화
-    Map<String, int> moodCounts = { // moodcounts: 감정 -> key, 횟수 : value
-      'assets/Great.png': 0,
-      'assets/Good.png': 0,
-      'assets/Okay.png': 0,
-      'assets/Bad.png': 0,
-      'assets/Terrible.png': 0,
-    };
 
     // moodEvents 맵을 순회하면서 각 감정의 빈도를 moodCounts 맵에 저장
     moodEvents.values.forEach((mood) {
@@ -35,7 +34,7 @@ class StatisticsPage extends StatelessWidget {
           x: index, // x축 값 설정
           barRods: [
             // 각 막대의 높이(y 값)와 색상 설정
-            BarChartRodData(y: value.toDouble(), colors: [Colors.blue])
+            BarChartRodData(toY: value.toDouble(), color: Colors.blue),
           ],
         ),
       );
@@ -54,32 +53,29 @@ class StatisticsPage extends StatelessWidget {
             alignment: BarChartAlignment.spaceAround, // 막대 정렬 방식 설정
             barGroups: barGroups, // 생성된 barGroups 데이터 설정
             titlesData: FlTitlesData(
-              leftTitles: SideTitles(showTitles: true), // y축 타이틀 표시 설정
-              bottomTitles: SideTitles(
-                showTitles: true, // x축 타이틀 표시 설정
-                getTitles: (double value) { // -> 문자를 넣어서 실제 데이터와 매핑해야함,,,
-                  // x축 타이틀을 문자열로 변환하여 반환
-                  switch (value.toInt()) { // -> 실제 local 데이터와 매칭되지 않음
-                    case 0:
-                      return 'Great';
-                    case 1:
-                      return 'Good';
-                    case 2:
-                      return 'Okay';
-                    case 3:
-                      return 'Bad';
-                    case 4:
-                      return 'Terrible';
-                    default:
-                      return '';
-                  }
-                },
-                reservedSize: 30, // x축 타이틀 영역 크기 설정
+              show: true,
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: (double value, TitleMeta meta){
+                    return _getImageForTitle(value.toInt());
+                  },
+                ),
               ),
             ),
           ),
         ),
       ),
     );
+  }
+
+  Widget _getImageForTitle(int index){
+    List<String> keys = moodCounts.keys.toList();
+
+    if(index < 0 || index >= keys.length) {
+      return const SizedBox.shrink(); // index가 유효하지 않을 때 아무것도 렌더링하지 않음
+    }
+
+    return Image.asset(keys[index]);
   }
 }
