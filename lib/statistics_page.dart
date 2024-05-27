@@ -16,30 +16,7 @@ class StatisticsPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     print("statistics_page의 context $context");
-
-    // moodEvents 맵을 순회하면서 각 감정의 빈도를 moodCounts 맵에 저장
-    moodEvents.values.forEach((mood) {
-      // 감정의 빈도를 1 증가시킴, 기본값은 0
-      moodCounts[mood] = (moodCounts[mood] ?? 0) + 1;
-    });
-
-    // BarChart에 사용할 데이터 리스트 초기화
-    List<BarChartGroupData> barGroups = [];
-    int index = 0;
-
-    // moodCounts 맵을 순회하면서 각 감정에 대한 BarChartGroupData 객체 생성 및 추가
-    moodCounts.forEach((key, value) {
-      barGroups.add(
-        BarChartGroupData(
-          x: index, // x축 값 설정
-          barRods: [
-            // 각 막대의 높이(y 값)와 색상 설정
-            BarChartRodData(toY: value.toDouble(), color: Colors.blue),
-          ],
-        ),
-      );
-      index++; // 다음 감정에 대한 x축 값 증가
-    });
+    _countMoodOccurrences();
 
     // Scaffold 위젯으로 페이지 레이아웃 설정
     return Scaffold(
@@ -51,7 +28,7 @@ class StatisticsPage extends StatelessWidget {
         child: BarChart(
           BarChartData(
             alignment: BarChartAlignment.spaceAround, // 막대 정렬 방식 설정
-            barGroups: barGroups, // 생성된 barGroups 데이터 설정
+            barGroups: _createBarGroups(), // 생성된 barGroups 데이터 설정
             titlesData: FlTitlesData(
               show: true,
               bottomTitles: AxisTitles(
@@ -67,6 +44,35 @@ class StatisticsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _countMoodOccurrences(){
+    // moodEvents 맵을 순회하면서 각 감정의 빈도를 moodCounts 맵에 저장
+    for(var mood in moodEvents.values) {
+      // 감정의 빈도를 1 증가시킴, 기본값은 0
+      moodCounts[mood] = (moodCounts[mood] ?? 0) + 1;
+    }
+  }
+
+  List<BarChartGroupData> _createBarGroups(){
+      List<BarChartGroupData> barGroups = [];
+      int index = 0;
+
+      // moodCounts 맵을 순회하면서 각 감정에 대한 BarChartGroupData 객체 생성 및 추가
+      moodCounts.forEach((key, value) {
+        barGroups.add(
+          BarChartGroupData(
+            x: index, // x축 값 설정
+            barRods: [
+              // 각 막대의 높이(y 값)와 색상 설정
+              BarChartRodData(toY: value.toDouble(), color: Colors.blue),
+            ],
+          ),
+        );
+        index++; // 다음 감정에 대한 x축 값 증가
+      });
+
+      return barGroups;
   }
 
   Widget _getImageForTitle(int index){
