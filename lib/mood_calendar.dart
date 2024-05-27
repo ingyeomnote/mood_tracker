@@ -32,89 +32,6 @@ class MoodCalendar extends StatelessWidget {
       onDaySelected: onDaySelected, // 날짜를 선택할 때 호출되는 콜백 함수이다.
       eventLoader: eventLoader, // 선택된 날짜의 이벤트를 로드하는 함수이다.
 
-      /*// 캘린더 스타일 커스터마이징
-      calendarStyle: CalendarStyle(
-        todayDecoration: BoxDecoration(
-          color: Colors.lightBlueAccent,
-          shape: BoxShape.circle,
-        ),
-        selectedDecoration: BoxDecoration(
-          color: Colors.purple,
-          shape: BoxShape.circle,
-        ),
-        defaultDecoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.grey),
-        ),
-        weekendDecoration: BoxDecoration(
-          shape: BoxShape.circle,
-          border: Border.all(color: Colors.red),
-        ),
-        markerDecoration: BoxDecoration(
-          color: Colors.black,
-          shape: BoxShape.circle,
-        ),
-        // 기타 스타일 옵션을 추가할 수 있습니다.
-      ),*/
-
-
-/*
-      // 캘린더 헤더 스타일 커스터마이징
-      headerStyle: HeaderStyle(
-        titleCentered: true,
-        formatButtonVisible: false,
-        titleTextStyle: TextStyle(
-          color: Colors.blueAccent,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
-        ),
-        leftChevronIcon: Icon(Icons.chevron_left, color: Colors.blueAccent),
-        rightChevronIcon: Icon(Icons.chevron_right, color: Colors.blueAccent),
-      ),
-
-      // 마커를 세밀하게 조정
-      calendarBuilders: CalendarBuilders(
-        selectedBuilder: (context, date, _) {
-          // 선택된 날짜에 이미지를 사용하도록 구성
-          return Container(
-            width: 50, // 날짜 셀 크기
-            height: 50,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/selected_day_image.png'), // 원하는 이미지 경로
-                fit: BoxFit.cover,
-              ),
-            ),
-            alignment: Alignment.center,
-            child: Text(
-              '${date.day}',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          );
-        },
-
-        // 이벤트 마커 설정
-        markerBuilder: (context, date, events) {
-          if (events.isNotEmpty) {
-            return Positioned(
-              bottom: 1,
-              child: Container(
-                width: 8,
-                height: 8,
-                decoration: BoxDecoration(
-                  color: Colors.black,
-                  shape: BoxShape.circle,
-                ),
-              ),
-            );
-          }
-          return SizedBox.shrink();
-        },
-      ),*/
-
     // 각 날짜에 맞게 감정 상태 이미지를 표시하기 위한 CalendarBuilders
       calendarBuilders: CalendarBuilders(
         markerBuilder: (context, date, events) {
@@ -132,20 +49,20 @@ class MoodCalendar extends StatelessWidget {
               ),
             );
           }
-          return SizedBox.shrink(); // 이벤트가 없으면 빈 위젯 반환
+          return const SizedBox.shrink(); // 이벤트가 없으면 빈 위젯 반환
         },
         selectedBuilder: (context, date, _) {
           return Container(
             width: 40,
             height: 40,
-            decoration: BoxDecoration(
+            decoration: const BoxDecoration(
               shape: BoxShape.circle,
               color: Colors.blue,
             ),
             alignment: Alignment.center,
             child: Text(
               '${date.day}',
-              style: TextStyle(
+              style: const TextStyle(
                 color: Colors.white,
                 fontWeight: FontWeight.bold,
               ),
