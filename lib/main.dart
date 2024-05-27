@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:app_test_01/mood_tracker_home_page.dart';
+import 'mood_tracker_home_page.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 // 애플리케이션의 진입점이다.
