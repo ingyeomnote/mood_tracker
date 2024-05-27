@@ -1,22 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'mood.dart';
 
 class StatisticsPage extends StatelessWidget {
   final Map<DateTime, String> moodEvents;
   StatisticsPage({required this.moodEvents});
-  // 각 감정 이미지 경로를 키로, 해당 감정의 빈도를 값으로 갖는 맵 초기화
-  Map<String, int> moodCounts = { // moodcounts: 감정 -> key, 횟수 : value
-    'assets/Great.png': 0,
-    'assets/Good.png': 0,
-    'assets/Okay.png': 0,
-    'assets/Bad.png': 0,
-    'assets/Terrible.png': 0,
-  };
+  Map<String, int> moodCounts = {};
 
   @override
   Widget build(BuildContext context) {
     print("statistics_page의 context $context");
+    _initMoodCounts(); // moood.dart 파일의 moodImages 변수에 설정된 path를 가져옴(종속성)
     _countMoodOccurrences();
+
 
     // Scaffold 위젯으로 페이지 레이아웃 설정
     return Scaffold(
@@ -44,6 +40,12 @@ class StatisticsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  void _initMoodCounts(){
+    for(var mood in moodImages.values){
+      moodCounts[mood] = 0;
+    }
   }
 
   void _countMoodOccurrences(){
