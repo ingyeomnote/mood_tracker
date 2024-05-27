@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:app_test_01/main.dart';
+import 'package:mood_tracker/main.dart';
 
 void main() {
   testWidgets('Displays mood dialog and accepts input', (WidgetTester tester) async {
