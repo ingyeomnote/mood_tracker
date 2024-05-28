@@ -25,7 +25,7 @@ class MoodSelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("mood의 context $context");
+    print("mood의 context $context 감정 : $selectedMood");
     return ListBody(
       children: moodImages.entries.map((entry) => ListTile(
         title: Text(entry.key), // 기분의 이름을 타이틀로 사용

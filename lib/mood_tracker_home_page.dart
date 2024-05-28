@@ -102,14 +102,29 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
 
   // 기분 입력을 위한 다이얼로그를 보여주는 함수이다.
   Future<void> _showMoodDialog() async {
+    // 저장된 데이터 불러오기
+    if(_moods.containsKey(_selectedDay)){
+      List? savedData = _moods[_selectedDay];
+      if(savedData != null){
+        _mood = savedData[0];
+        _memoController.text = savedData[1];
+
+        print("과거 나의 mood: $_mood");
+      }
+    } else{ // 한 번 event가 있는 날을 선택하면 그 날의 감정이 _mood에 들어간다.
+            // 이 _mood에 들어간 감정이, 다른 날을 선택해도 계속 남아있어서 event가 있으면 덮어씌어짐, 없으면 전에께 남아있으니 초기화
+      _mood = " ";
+    }
     return showDialog<void>(
       context: context,
       barrierDismissible: true, // 다이얼로그 바깥을 터치하면 닫힘
       builder: (BuildContext context) {
         return MoodDialog(
+          initialMood: _mood,
           memoController: _memoController,
           onMoodSelected: (mood) {
            setState(() {
+             print("현재 나의 mood: $mood");
               _mood = mood; // 선택된 기분을 상태에 저장
               _moods[_selectedDay] = [_mood, _memoController.text];
             });
