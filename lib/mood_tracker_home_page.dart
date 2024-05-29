@@ -108,8 +108,6 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
       if(savedData != null){
         _mood = savedData[0];
         _memoController.text = savedData[1];
-
-        print("과거 나의 mood: $_mood");
       }
     } else{ // 한 번 event가 있는 날을 선택하면 그 날의 감정이 _mood에 들어간다.
             // 이 _mood에 들어간 감정이, 다른 날을 선택해도 계속 남아있어서 event가 있으면 덮어씌어짐, 없으면 전에께 남아있으니 초기화
@@ -123,15 +121,10 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
           initialMood: _mood,
           memoController: _memoController,
           onMoodSelected: (mood) {
-           setState(() {
-             print("현재 나의 mood: $mood");
-              _mood = mood; // 선택된 기분을 상태에 저장
-              _moods[_selectedDay] = [_mood, _memoController.text];
-            });
-             // print("_momoController $_memoController");
-            //_saveMood(); // 변경된 기분을 저장..이걸 save 버튼 눌렀을 때로..
+            _mood = mood; // 선택된 기분을 상태에 저장
           },
           onSavePressed: (){
+            _moods[_selectedDay] = [_mood, _memoController.text];
             _saveMood();
           },
         );
@@ -141,6 +134,7 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
 
   @override
   Widget build(BuildContext context) {
+    print("home_page $context");
     return Scaffold(
       appBar: AppBar(
         title: Text('Mood Tracker'), // 앱 바의 타이틀을 설정한다.
@@ -165,9 +159,9 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
               });
               print("selectedDay : $_selectedDay and foucsedDay : $focusedDay");
               if(moodEvents.containsKey(_selectedDay)){ // 감정이 기록된 날에는 다이얼로그를 표시하지 않는다.
-                print("감정 기록이 되어 있는 날짜입니다.");
+                print("all : $_moods");
               }else{
-
+                _memoController.clear();
               }
               _showMoodDialog(); // 새로운 기분을 입력받기 위한 다이얼로그를 보여준다.
             },
