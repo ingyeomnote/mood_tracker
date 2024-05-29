@@ -4,8 +4,9 @@ import 'mood.dart';
 
 class StatisticsPage extends StatelessWidget {
   final Map<DateTime, String> moodEvents;
-  StatisticsPage({required this.moodEvents});
   Map<String, int> moodCounts = {};
+
+  StatisticsPage({required this.moodEvents});
 
   @override
   Widget build(BuildContext context) {
