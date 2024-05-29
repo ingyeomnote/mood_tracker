@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'mood_count.dart';
 import 'mood_manager.dart';
 import 'mood_dialog.dart';
 import 'mood_calendar.dart';
@@ -137,13 +138,21 @@ class _MoodTrackerHomePageState extends State<MoodTrackerHomePage> {
     print("home_page $context");
     return Scaffold(
       appBar: AppBar(
-        title: Text('Mood Tracker'), // 앱 바의 타이틀을 설정한다.
+        title: const Text('Mood Tracker'), // 앱 바의 타이틀을 설정한다.
         actions: [
           IconButton(
-            icon: Icon(Icons.bar_chart),
+            icon: const Icon(Icons.bar_chart),
             onPressed: (){
               Navigator.of(context).push(
                 MaterialPageRoute(builder: (context) => StatisticsPage(moodEvents: moodEvents)),
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.access_alarm),
+            onPressed: (){
+              Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => MoodCount(moodEvents: moodEvents)),
               );
             },
           )
