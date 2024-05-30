@@ -12,6 +12,12 @@ MoodCount({
   @override
   Widget build(BuildContext context){
     print("count 통계 페이지");
+    return Scaffold(
+      appBar: AppBar(
+        title: Text("Mood Count"),
+      ),
+    );
+
     // TODO : implement build
     throw UnimplementedError();
   }
