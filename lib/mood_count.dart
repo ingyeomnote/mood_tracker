@@ -14,7 +14,21 @@ MoodCount({
     print("count 통계 페이지");
     return Scaffold(
       appBar: AppBar(
-        title: Text("Mood Count"),
+        title: const Text("Mood Count"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(100 ),
+        child: Container(
+          width: 200,
+          height: 200,
+          color: Colors.blue,
+          child: const Center(
+            child: Text(
+              'Hello, Flutter',
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
+        ),
       ),
     );
 
