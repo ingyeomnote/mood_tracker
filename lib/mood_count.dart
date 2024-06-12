@@ -10,7 +10,12 @@ MoodCount({
   required this.moodEvents,
 });
 
+// 현재는 assets/Good.png (value) 값만 가지고 오고 있는데, date 값도 가져와서
+// 24년 6월의 assets/Good.png 의 개수를 파악하고 월별로 카운트 할 수 있게,,
+// 24 year 6 month 이렇게 저장하고 만약 이번달의 count navigator을 누르면 year 언제야? 24, month는? 6
+// 그럼 24년도 6월의 데이터를 가지고 있는 걸 보여줌?
 void _countMoodOccurrences(){
+  print("mood event $moodEvents");
   for(var mood in moodEvents.values){
     moodCounts[mood] = (moodCounts[mood] ?? 0) + 1;
   }
